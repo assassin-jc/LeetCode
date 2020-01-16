@@ -15,7 +15,7 @@ import java.util.Set;
  * Version: 1.0
  * ****************************************************************************
  */
-public class Solution {
+public class ArraySolution {
 
     public static void main(String[] args) {
         // 调试代码
