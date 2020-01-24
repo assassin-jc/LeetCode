@@ -19,20 +19,21 @@ public class ArraySolution {
 
     public static void main(String[] args) {
         // 调试代码
-        removeDuplicates(new int[]{7, 1, 5, 7, 6, 4});
-        maxProfit(new int[]{7, 2, 6, 3, 7, 4});
-        rotate(new int[]{1, 2}, 3);
-        singleNumber(new int[]{1, 0, 1});
-        plusOne(new int[]{1, 2, 3});
-        twoSum(new int[]{-1, -2, -3, -4, -5}, -8);
-        moveZeroes(new int[]{0, 1, 0, 3, 12});
-        intersect(new int[]{2, 1}, new int[]{1, 2});
+//        removeDuplicates(new int[]{7, 1, 5, 7, 6, 4});
+//        maxProfit(new int[]{7, 2, 6, 3, 7, 4});
+//        rotate(new int[]{1, 2}, 3);
+//        singleNumber(new int[]{1, 0, 1});
+//        plusOne(new int[]{1, 2, 3});
+//        twoSum(new int[]{-1, -2, -3, -4, -5}, -8);
+//        moveZeroes(new int[]{0, 1, 0, 3, 12});
+//        intersect(new int[]{2, 1}, new int[]{1, 2});
+        System.out.println(sum(new int[]{1, 2, 4, 6, 7, 8, 9}));
 
     }
 
     /**
      * 从排序数组中删除重复项
-     *
+     * <p>
      * 给定一个排序数组，你需要在原地删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。
      * 不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。
      *
@@ -53,7 +54,7 @@ public class ArraySolution {
 
     /**
      * 买卖股票的最佳时机 II
-     *
+     * <p>
      * 输入: [7,1,5,3,6,4]
      * 输出: 7
      * 解释: 在第 2 天（股票价格 = 1）的时候买入，在第 3 天（股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5-1 = 4 。
@@ -157,7 +158,7 @@ public class ArraySolution {
 
     /**
      * 两个数组的交集 II
-     *
+     * <p>
      * 给定两个数组，写一个方法来计算它们的交集。
      *
      * @param nums1
@@ -193,7 +194,7 @@ public class ArraySolution {
 
     /**
      * 加一
-     *
+     * <p>
      * 给定一个非负整数组成的非空数组，在该数的基础上加一，返回一个新的数组。
      * 最高位数字存放在数组的首位， 数组中每个元素只存储一个数字。
      * 你可以假设除了整数 0 之外，这个整数不会以零开头。
@@ -232,7 +233,7 @@ public class ArraySolution {
 
     /**
      * 移动零
-     *
+     * <p>
      * 给定一个数组 nums, 编写一个函数将所有 0 移动到它的末尾，同时保持非零元素的相对顺序。
      *
      * @param nums
@@ -257,7 +258,7 @@ public class ArraySolution {
 
     /**
      * 两数之和
-     *
+     * <p>
      * 给定一个整数数组和一个目标值，找出数组中和为目标值的两个数。
      * 你可以假设每个输入只对应一种答案，且同样的元素不能被重复利用。
      *
@@ -280,7 +281,23 @@ public class ArraySolution {
         return null;
     }
 
-
+    /**
+     * 算法图解练习4.1
+     * <p>
+     *     数组求和的递归形式
+     *
+     * @param nums
+     * @return
+     */
+    public static int sum(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        } else {
+            int[] numArr = new int[nums.length - 1];
+            System.arraycopy(nums, 1, numArr, 0, nums.length - 1);
+            return nums[0] + sum(numArr);
+        }
+    }
 
 
 }
