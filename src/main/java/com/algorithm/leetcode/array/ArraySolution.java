@@ -1,8 +1,6 @@
 package com.algorithm.leetcode.array;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * *****************************************************************************
@@ -28,6 +26,7 @@ public class ArraySolution {
 //        moveZeroes(new int[]{0, 1, 0, 3, 12});
 //        intersect(new int[]{2, 1}, new int[]{1, 2});
         System.out.println(sum(new int[]{1, 2, 4, 6, 7, 8, 9}));
+        System.out.println(quickSort(new ArrayList<>(Arrays.asList(new Integer[]{2, 1, 4, 5, 6, 9, 8}))));
 
     }
 
@@ -284,7 +283,7 @@ public class ArraySolution {
     /**
      * 算法图解练习4.1
      * <p>
-     *     数组求和的递归形式
+     * 数组求和的递归形式
      *
      * @param nums
      * @return
@@ -297,6 +296,89 @@ public class ArraySolution {
             System.arraycopy(nums, 1, numArr, 0, nums.length - 1);
             return nums[0] + sum(numArr);
         }
+    }
+
+    /**
+     * 算法图解
+     * <p>
+     * 快速排序实现
+     *
+     * @param array
+     * @return
+     */
+    public static List<Integer> quickSort(List<Integer> array) {
+        List<Integer> sortedArray = new ArrayList<>();
+        if (array == null || array.size() < 2) {
+            return array;
+        } else {
+            List<Integer> less = new ArrayList<>();
+            List<Integer> greater = new ArrayList<>();
+            int baseValue = array.get(0);
+            for (int i = 1; i < array.size(); i++) {
+                if (array.get(i) <= baseValue) {
+                    less.add(array.get(i));
+                } else {
+                    greater.add(array.get(i));
+                }
+            }
+            sortedArray.addAll(quickSort(less));
+            sortedArray.add(baseValue);
+            sortedArray.addAll(quickSort(greater));
+            return sortedArray;
+        }
+    }
+
+    /**
+     * 算法图解
+     * <p>
+     * 迪克斯特拉算法实现
+     *
+     * @param array
+     * @return
+     */
+
+    //初始化所有的节点信息
+    private static final String[] nodes = {"start", "A", "B", "C", "E", "F", "end"};
+    //已探测的节点
+    private static Set<String> visitedNodes = new HashSet<String>();
+    //设置没有路径的标志
+    private static long NOWAY_SIGN = Long.MAX_VALUE;
+    private static Map<String, String> parents = new HashMap<>();
+    //地图
+    private static Map<String, Map<String, Long>> graphs = new HashMap<>();
+    //cost表
+    private static Map<String, Long> costs = new HashMap<>();
+
+    public static String findLowestCost(Map<String, Long> costs) {
+        long lowestCost = NOWAY_SIGN;
+        String lowestCostNode = null;
+        for (Map.Entry<String, Long> entry : costs.entrySet()) {
+            long cost = entry.getValue();
+            if (cost < lowestCost && !visitedNodes.contains(entry.getKey())) {
+                lowestCost = cost;
+                lowestCostNode = entry.getKey();
+            }
+        }
+        return lowestCostNode;
+    }
+
+
+    public static void dijkstra() {
+        String nodeName = findLowestCost(costs);
+        while (nodeName != null) {
+            long cost = costs.get(nodeName);
+            Map<String, Long> neighbors = graphs.get(nodeName);
+            for (String neighbor : neighbors.keySet()) {
+                long newCost = cost + neighbors.get(neighbor);
+                if (costs.get(neighbor) > newCost) {
+                    costs.put(neighbor, newCost);
+                    parents.put(neighbor, nodeName);
+                }
+            }
+            visitedNodes.add(nodeName);
+            nodeName = findLowestCost(costs);
+        }
+
     }
 
 
