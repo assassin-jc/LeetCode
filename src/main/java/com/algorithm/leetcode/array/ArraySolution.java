@@ -14,6 +14,23 @@ import java.util.*;
  * ****************************************************************************
  */
 public class ArraySolution {
+    public static ListNode l1 = new ListNode(1);
+    public static ListNode l2 = new ListNode(2);
+
+    static {
+
+        ListNode two = new ListNode(2);
+        ListNode three = new ListNode(3);
+        ListNode four = new ListNode(4);
+        ListNode five = new ListNode(5);
+        ListNode six = new ListNode(6);
+
+        l1.next = two;
+        two.next = three;
+        l2.next = four;
+        four.next = five;
+        five.next = six;
+    }
 
     public static void main(String[] args) {
         // 调试代码
@@ -25,8 +42,11 @@ public class ArraySolution {
 //        twoSum(new int[]{-1, -2, -3, -4, -5}, -8);
 //        moveZeroes(new int[]{0, 1, 0, 3, 12});
 //        intersect(new int[]{2, 1}, new int[]{1, 2});
-        System.out.println(sum(new int[]{1, 2, 4, 6, 7, 8, 9}));
-        System.out.println(quickSort(new ArrayList<>(Arrays.asList(new Integer[]{2, 1, 4, 5, 6, 9, 8}))));
+//        System.out.println(sum(new int[]{1, 2, 4, 6, 7, 8, 9}));
+//        System.out.println(quickSort(new ArrayList<>(Arrays.asList(new Integer[]{2, 1, 4, 5, 6, 9, 8}))));
+
+
+        recursionMergeTwoLists(l1, l2);
 
     }
 
@@ -278,6 +298,165 @@ public class ArraySolution {
             }
         }
         return null;
+    }
+
+    /**
+     * 给定一个按非递减顺序排序的整数数组 A，返回每个数字的平方组成的新数组，要求也按非递减顺序排序。
+     * <p>
+     * <p>
+     * 示例 1：
+     * <p>
+     * 输入：[-4,-1,0,3,10]
+     * 输出：[0,1,9,16,100]
+     * 示例 2：
+     * <p>
+     * 输入：[-7,-3,2,3,11]
+     * 输出：[4,9,9,49,121]
+     *  
+     * <p>
+     * 提示：
+     * <p>
+     * 1 <= A.length <= 10000
+     * -10000 <= A[i] <= 10000
+     * A 已按非递减顺序排序。
+     *
+     * @param A
+     * @return
+     */
+    public int[] sortedSquares(int[] A) {
+        int N = A.length;
+        int j = 0;
+        while (j < N && A[j] < 0)
+            j++;
+        int i = j - 1;
+        int k = 0;
+        int[] result = new int[N];
+        while (i >= 0 && j < N) {
+            if (A[i] * A[i] < A[j] * A[j]) {
+                result[k++] = A[i] * A[i];
+                i--;
+            } else {
+                result[k++] = A[j] * A[j];
+                j++;
+            }
+        }
+
+        while (i >= 0) {
+            result[k++] = A[i] * A[i];
+            i--;
+        }
+        while (j < N) {
+            result[k++] = A[j] * A[j];
+            j++;
+        }
+
+        return result;
+    }
+
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     * int val;
+     * ListNode next;
+     * ListNode(int x) { val = x; }
+     * }
+     */
+    public static class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode(int x) {
+            val = x;
+        }
+    }
+
+    public void deleteNode(ListNode node) {
+        node.val = node.next.val;
+        node.next = node.next.next;
+    }
+
+    public ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode curr = head;
+        while (curr != null) {
+            ListNode nextTemp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextTemp;
+        }
+        return prev;
+    }
+
+    /**
+     * 给定一个大小为 n 的数组，找到其中的多数元素。多数元素是指在数组中出现次数大于 ⌊ n/2 ⌋ 的元素。
+     * <p>
+     * 你可以假设数组是非空的，并且给定的数组总是存在多数元素。
+     *
+     * @param nums
+     * @return
+     */
+    public int majorityElement(int[] nums) {
+        Map<Integer, Integer> countMap = new HashMap<>();
+        int length = nums.length;
+        if (length < 3) {
+            return nums[0];
+        }
+        for (int num : nums) {
+            if (!countMap.containsKey(num)) {
+                countMap.put(num, 1);
+            } else {
+                int count = countMap.get(num) + 1;
+                if (count > length / 2) {
+                    return num;
+                }
+                countMap.put(num, count);
+            }
+        }
+        return 0;
+    }
+
+
+    /**
+     * 将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 
+     * <p>
+     * 示例：
+     * <p>
+     * 输入：1->2->4, 1->3->4
+     * 输出：1->1->2->3->4->4
+     *
+     * @param l1
+     * @param l2
+     * @return
+     */
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode prehead = new ListNode(-1);
+        ListNode prev = prehead;
+        while (l1 != null && l2 != null) {
+            if (l1.val <= l2.val) {
+                prev.next = l1;
+                l1 = l1.next;
+            } else {
+                prev.next = l2;
+                l2 = l2.next;
+            }
+            prev = prev.next;
+        }
+        prev.next = l1 == null ? l2 : l1;
+        return prehead.next;
+    }
+
+    public static ListNode recursionMergeTwoLists(ListNode l1, ListNode l2) {
+        if (l1 == null) {
+            return l2;
+        } else if (l2 == null) {
+            return l1;
+        } else if (l1.val < l2.val) {
+            l1.next = recursionMergeTwoLists(l1.next, l2);
+            return l1;
+        } else {
+            l2.next = recursionMergeTwoLists(l1, l2.next);
+            return l2;
+        }
     }
 
     /**
