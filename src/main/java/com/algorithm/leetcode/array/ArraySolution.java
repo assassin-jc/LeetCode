@@ -45,9 +45,7 @@ public class ArraySolution {
 //        System.out.println(sum(new int[]{1, 2, 4, 6, 7, 8, 9}));
 //        System.out.println(quickSort(new ArrayList<>(Arrays.asList(new Integer[]{2, 1, 4, 5, 6, 9, 8}))));
 
-
-        recursionMergeTwoLists(l1, l2);
-
+        //recursionMergeTwoLists(l1, l2);
     }
 
     /**
@@ -97,6 +95,40 @@ public class ArraySolution {
             }
         }
         return profit;
+    }
+
+    /**
+     * 给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。
+     * <p>
+     * 如果你最多只允许完成一笔交易（即买入和卖出一支股票），设计一个算法来计算你所能获取的最大利润。
+     * <p>
+     * 注意你不能在买入股票前卖出股票。
+     * <p>
+     * 示例 1:
+     * <p>
+     * 输入: [7,1,5,3,6,4]
+     * 输出: 5
+     * 解释: 在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。
+     * 注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格。
+     * 示例 2:
+     * <p>
+     * 输入: [7,6,4,3,1]
+     * 输出: 0
+     * 解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
+     *
+     * @param prices
+     * @return
+     */
+    public int maxProfit2(int[] prices) {
+        int minprice = Integer.MAX_VALUE;
+        int maxprofit = 0;
+        for (int i = 0; i < prices.length; i++) {
+            if (prices[i] < minprice)
+                minprice = prices[i];
+            else if (prices[i] - minprice > maxprofit)
+                maxprofit = prices[i] - minprice;
+        }
+        return maxprofit;
     }
 
     /**
@@ -415,6 +447,26 @@ public class ArraySolution {
         return 0;
     }
 
+    /**
+     * 编写一个程序，找到两个单链表相交的起始节点。
+     *
+     * @param headA
+     * @param headB
+     * @return
+     */
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) {
+            return null;
+        }
+        ListNode currNodeA = headA;
+        ListNode currNodeB = headB;
+        while (currNodeA != currNodeB) {
+            currNodeA = currNodeA == null ? headB : currNodeA.next;
+            currNodeB = currNodeB == null ? headA : currNodeB.next;
+        }
+        return currNodeA;
+
+    }
 
     /**
      * 将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 
@@ -458,6 +510,87 @@ public class ArraySolution {
             return l2;
         }
     }
+
+    /**
+     * 给你一个整数数组 arr，请你检查是否存在两个整数 N 和 M，满足 N 是 M 的两倍（即，N = 2 * M）。
+     * <p>
+     * 更正式地，检查是否存在两个下标 i 和 j 满足：
+     * <p>
+     * i != j
+     * 0 <= i, j < arr.length
+     * arr[i] == 2 * arr[j]
+     *
+     * @param arr
+     * @return
+     */
+    public boolean checkIfExist(int[] arr) {
+        if (arr.length == 0) {
+            return false;
+        }
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr.length; j++) {
+                if (i == j) {
+                    continue;
+                }
+                if (arr[i] == arr[j] * 2 || arr[j] == arr[i] * 2) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 给你两个长度相等的字符串 s 和 t。每一个步骤中，你可以选择将 t 中的 任一字符 替换为 另一个字符。
+     * <p>
+     * 返回使 t 成为 s 的字母异位词的最小步骤数。
+     * <p>
+     * 字母异位词 指字母相同，但排列不同的字符串。
+     *
+     * @param s
+     * @param t
+     * @return
+     */
+    public static int minSteps(String s, String t) {
+        int result = 0;
+        int[] letter = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            letter[s.charAt(i) - 'a']++;
+            letter[t.charAt(i) - 'a']--;
+        }
+
+        for (int i = 0; i < 26; i++) {
+            if (letter[i] > 0) {
+                result += letter[i];
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
+     * <p>
+     * 你可以假设数组中无重复元素。
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static int searchInsert(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return left;
+    }
+
 
     /**
      * 算法图解练习4.1

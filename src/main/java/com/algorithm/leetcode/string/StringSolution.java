@@ -192,6 +192,8 @@ public class StringSolution {
         return x == revertedNumber || x == revertedNumber / 10;
     }
 
+
+
     public static void main(String[] args) {
         myAtoi("42");
         longestPalindrome("babad");
